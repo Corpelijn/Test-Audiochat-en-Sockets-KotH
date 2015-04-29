@@ -20,7 +20,7 @@ public class GameServer {
     /**
      * Runs the server.
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         ServerSocket listener = new ServerSocket(9090);
         try {
             while (true) {
@@ -31,10 +31,12 @@ public class GameServer {
                     //out.println(new Date().toString());
                     
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                    out.println("Date object");
+                    //out.println("Date object");
                     os.writeObject(new Date());
-                    out.println("String object");
+                    //out.println("String object");
                     os.writeObject(new String("Koek"));
+                    Thread.sleep(1000);
+                    os.writeObject(new Date());
                     System.out.println("Connected to: " + socket.getRemoteSocketAddress().toString());
                 } finally {
                     socket.close();
