@@ -11,22 +11,29 @@ import java.io.Serializable;
  *
  * @author Bas
  */
-public class message implements Serializable {
+public class Message implements Serializable {
 
     private String message;
+    private Object data;
 
-    public String getMessage()
-    {
+    public String getMessage() {
         return this.message;
     }
-    
-    public void setMessage(String message)
-    {
+
+    public void setMessage(String message) {
         this.message = message;
     }
-    
-    public message(String message)
-    {
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
+    }
+
+    public Message(String message, Object data) {
         this.message = message;
+        this.data = data;
     }
 }

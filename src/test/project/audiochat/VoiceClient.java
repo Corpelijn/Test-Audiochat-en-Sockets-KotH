@@ -64,8 +64,16 @@ public class VoiceClient {
                 continue;
             }
 
-            command readed = (command) o;
-            String answer = readed.getText();
+            Message readed = (Message) o;
+            String answer  = "";
+            if(readed.getMessage().equals("string"))
+            {
+                answer = (String)readed.getData();
+            }
+            else if(readed.getMessage().equals("audio"))
+            {
+                answer = "audio fragment";
+            }
 
             if (answer.equals("exit")) {
                 break;

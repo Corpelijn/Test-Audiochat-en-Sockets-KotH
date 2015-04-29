@@ -40,8 +40,17 @@ public class MessageReader extends Thread
                 continue;
             }
 
-            command readed = (command) o;
-            String answer = readed.getText();
+            Message readed = (Message) o;
+            String answer = "";
+            if(readed.getMessage().equals("string"))
+            {
+                answer = (String)readed.getData();
+            }
+            else if(readed.getMessage().equals("audio"))
+            {
+                answer = "audio fragment";
+            }
+            
 
             if (answer.equals("exit")) {
                 parent.SendMessage(answer);

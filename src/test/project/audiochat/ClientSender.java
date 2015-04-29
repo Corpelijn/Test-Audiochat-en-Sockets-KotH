@@ -28,7 +28,7 @@ public class ClientSender extends Thread {
         while (true) {
             String command = JOptionPane.showInputDialog("Type a new command");
             try {
-                stream.writeObject(new command(command));
+                stream.writeObject(new Message("string", command));
             } catch (IOException ex) {
             }
         }

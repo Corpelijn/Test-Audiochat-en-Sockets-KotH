@@ -21,7 +21,7 @@ public class Client extends Thread {
     private Socket socket;
     private ObjectOutputStream sender;
     private ObjectInputStream reader;
-    private List<String> messages;
+    private List<Message> messages;
 
     public Socket getSocket() {
         return this.socket;
@@ -45,18 +45,21 @@ public class Client extends Thread {
     }
 
     public synchronized void addMessage(String message) {
-        messages.add(message);
+        if(message.equals("audio"))
+            messages.add(new Message("audio", message));
+        else
+            messages.add(new Message("string", message));
     }
 
     @Override
     public void run() {
-        messages.add("Welcome");
+        messages.add(new Message("string", "Welcome"));
         try {
             while (true) {
                 synchronized (messages) {
                     if (messages.size() > 0) {
                         try {
-                            sender.writeObject(new command(messages.get(0)));
+                            sender.writeObject(messages.get(0));
                             if (messages.get(0).equals("exit")) {
                                 break;
                             }
