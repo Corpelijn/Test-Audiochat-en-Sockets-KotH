@@ -25,7 +25,7 @@ public class GameClient {
             //"Enter IP Address of a machine that is\n" +
             //"running the date service on port 9090:");
         Socket s = new Socket("127.0.0.1", 9090);
-        PrintWriter out = new PrintWriter(s.getOutputStream(), true);
+        //PrintWriter out = new PrintWriter(s.getOutputStream(), true);
         ObjectInputStream is = new ObjectInputStream(s.getInputStream());
         //BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
         while (true){

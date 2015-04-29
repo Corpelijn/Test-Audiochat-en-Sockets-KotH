@@ -17,6 +17,7 @@ import java.util.Date;
  * @author Dennis
  */
 public class GameServer {
+
     /**
      * Runs the server.
      */
@@ -27,23 +28,24 @@ public class GameServer {
                 System.out.println("Connecting...");
                 Socket socket = listener.accept();
                 try {
-                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                    //out.println(new Date().toString());
-                    
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                    //out.println("Date object");
-                    os.writeObject(new Date());
-                    //out.println("String object");
-                    os.writeObject(new String("Koek"));
-                    Thread.sleep(1000);
-                    os.writeObject(new Date());
-                    System.out.println("Connected to: " + socket.getRemoteSocketAddress().toString());
+                    while (true) {
+                    //PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                        //out.println(new Date().toString());
+
+                        //out.println("Date object");
+                        os.writeObject(new Date());
+                        //out.println("String object");
+                        os.writeObject(new String("Koek"));
+                        Thread.sleep(1000);
+                        os.writeObject(new Date());
+                        System.out.println("Connected to: " + socket.getRemoteSocketAddress().toString());
+                    }
                 } finally {
                     socket.close();
                 }
             }
-        }
-        finally {
+        } finally {
             listener.close();
         }
     }
