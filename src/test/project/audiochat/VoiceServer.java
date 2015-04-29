@@ -17,6 +17,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Date;
 
 /**
@@ -32,20 +33,23 @@ public class VoiceServer {
      */
     public static void main(String[] args) throws IOException {
         ServerSocket listener = new ServerSocket(9090);
+        ArrayList<Socket> clients = new ArrayList<>();
+        
         try {
             while (true) {
                 System.out.println("Connecting...");
                 Socket socket = listener.accept();
-                try {
-                    //PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                    //out.println(new Date().toString());
-                    
-                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                    os.writeObject(new Date());
-                    System.out.println("Connected to: " + socket.getRemoteSocketAddress().toString());
-                } finally {
-                    socket.close();
-                }
+//                try {
+//                    ObjectOutputStream sender = new ObjectOutputStream(socket.getOutputStream());
+//                    sender.writeObject(new command("Bas Corpelijn is awesome!"));
+//                    System.out.println("Connected to: " + socket.getRemoteSocketAddress().toString());
+//                } finally {
+//                    socket.close();
+//                }
+                Client c = new Client(socket);
+                c.start();
+                //Thread t = new Thread(c);
+                //t.start();
             }
         }
         finally {
