@@ -31,14 +31,17 @@ public class Client extends Thread {
         this.socket = socket;
     }
 
-    public Client(Socket socket) {
+    public Client(Socket socket, VoiceServer parent) {
         this.socket = socket;
         this.messages = new ArrayList<>();
         try {
             sender = new ObjectOutputStream(this.socket.getOutputStream());
-            //reader = new ObjectInputStream(socket.getInputStream());
+            reader = new ObjectInputStream(this.socket.getInputStream());
         } catch (Exception ex) {
         }
+        
+        MessageReader ms = new MessageReader(parent, reader);
+        ms.start();
     }
 
     public synchronized void addMessage(String message) {

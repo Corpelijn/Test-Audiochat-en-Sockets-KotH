@@ -46,12 +46,12 @@ public class VoiceClient {
         } catch (Exception exc) {
             return;
         }
+        
+        ClientSender cs = new ClientSender(sender);
+        cs.start();
 
         while (true) {
-            String command = JOptionPane.showInputDialog("Type a new command");
-            sender.writeObject(new command(command));
-            
-            
+
             Object o;
             try {
                 o = reader.readObject();
@@ -71,7 +71,8 @@ public class VoiceClient {
                 break;
             }
 
-            JOptionPane.showMessageDialog(null, answer);
+            //JOptionPane.showMessageDialog(null, answer);
+            System.out.println(answer);
         }
         System.exit(0);
     }

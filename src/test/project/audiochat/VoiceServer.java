@@ -34,16 +34,14 @@ public class VoiceServer {
     
     public void start() throws IOException {
         ServerSocket listener = new ServerSocket(9090);
-        
-        MessageSpawn ms = new MessageSpawn(this);
-        ms.start();
+       
         
         try {
             while (true) {
                 System.out.println("Connecting...");
                 Socket socket = listener.accept();
 
-                Client c = new Client(socket);
+                Client c = new Client(socket, this);
                 c.start();
                 clients.add(c);
             }
@@ -59,5 +57,10 @@ public class VoiceServer {
         {
             c.addMessage(message);
         }
+    }
+    
+    public void Exit()
+    {
+        System.exit(0);
     }
 }
