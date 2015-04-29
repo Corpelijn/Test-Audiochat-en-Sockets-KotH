@@ -34,11 +34,11 @@ public class VoiceClient {
             "Enter IP Address of a machine that is\n" +
             "running the date service on port 9090:");
         Socket s = new Socket(serverAddress, 9090);
-        ObjectInputStream is = new ObjectInputStream(s.getInputStream());
-        //BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        Date d = (Date)is.readObject();
-        //String answer = input.readLine();
-        String answer = d.toString();
+        //ObjectInputStream is = new ObjectInputStream(s.getInputStream());
+        BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+        //Date d = (Date)is.readObject();
+        String answer = input.readLine();
+        //String answer = d.toString();
         JOptionPane.showMessageDialog(null, answer);
         System.exit(0);
     }
