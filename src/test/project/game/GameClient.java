@@ -5,11 +5,13 @@
  */
 package test.project.game;
 
+import java.io.BufferedReader;
+import java.io.EOFException;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.util.Date;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -22,16 +24,33 @@ public class GameClient {
             //"running the date service on port 9090:");
         Socket s = new Socket("127.0.0.1", 9090);
         ObjectInputStream is = new ObjectInputStream(s.getInputStream());
-        //BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
-        
+        BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
         while(s.isConnected()){
-            Object d = (Object)is.readObject();
             //String answer = input.readLine();
             //String answer = d.toString();
             //JOptionPane.showMessageDialog(null, answer);
             
-            System.out.println(d.toString());
+            if(input.ready()){
+               try{
+                System.out.println(input.readLine());
+                Object d = (Object)is.readObject();
+                //if(d instanceof Date){
+                    System.out.println(d.toString());
+                //}
+               }
+               catch(EOFException exc) {
+                   System.out.println("Exc :" + exc.getMessage());
+               }
+            }
+            
+            //try{
+                
+            //}
+            //catch(EOFException exc){
+               // System.out.println(exc.getMessage());
+            //}
         }
+        System.out.println("Connection lost");
         System.exit(0);
     }
 }
