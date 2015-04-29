@@ -13,7 +13,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.Date;
 
 import javax.swing.JOptionPane;
@@ -34,21 +36,27 @@ public class VoiceClient {
                         + "running the date service on port 9090:");
 
         Socket s = new Socket(serverAddress, 9090);
-        
+        ObjectInputStream reader;
+            try {
+                reader = new ObjectInputStream(s.getInputStream());
+            } catch (Exception exc) {
+                return;
+            }
 
         while (true) {
-            ObjectInputStream reader = new ObjectInputStream(s.getInputStream());
+           
+
             Object o = reader.readObject();
-            if(o == null)
+            if (o == null) {
                 continue;
-            
+            }
+
             command readed = (command) o;
             String answer = readed.getText();
 
-            if (answer.equals("exit")) {
+            if(answer.equals("exit"))
                 break;
-            }
-
+            
             JOptionPane.showMessageDialog(null, answer);
         }
         System.exit(0);

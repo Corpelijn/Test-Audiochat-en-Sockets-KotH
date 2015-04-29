@@ -39,17 +39,9 @@ public class VoiceServer {
             while (true) {
                 System.out.println("Connecting...");
                 Socket socket = listener.accept();
-//                try {
-//                    ObjectOutputStream sender = new ObjectOutputStream(socket.getOutputStream());
-//                    sender.writeObject(new command("Bas Corpelijn is awesome!"));
-//                    System.out.println("Connected to: " + socket.getRemoteSocketAddress().toString());
-//                } finally {
-//                    socket.close();
-//                }
+
                 Client c = new Client(socket);
                 c.start();
-                //Thread t = new Thread(c);
-                //t.start();
             }
         }
         finally {

@@ -41,19 +41,27 @@ public class Client extends Thread {
 
     @Override
     public void run() {
+        int count = 0;
         try {
             while (true) {
                 try {
-                    sender.writeObject(new command("testje"));
+                    sender.writeObject(new command("testje" + count));
+                    count++;
+                    if (count == 3) {
+                        sender.writeObject(new command("exit"));
+                        break;
+                    }
                 } catch (IOException ex) {
                 }
-                break;
+
             }
         } finally {
             try {
+                sender.close();
                 this.socket.close();
             } catch (IOException ex) {
             }
+
         }
     }
 
