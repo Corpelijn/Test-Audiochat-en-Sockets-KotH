@@ -13,6 +13,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.SocketAddress;
@@ -37,16 +38,28 @@ public class VoiceClient {
 
         Socket s = new Socket(serverAddress, 9090);
         ObjectInputStream reader;
+        ObjectOutputStream sender;
+        
+        try {
+            reader = new ObjectInputStream(s.getInputStream());
+            sender = new ObjectOutputStream(s.getOutputStream());
+        } catch (Exception exc) {
+            return;
+        }
+
+        while (true) {
+            String command = JOptionPane.showInputDialog("Type a new command");
+            sender.writeObject(new command(command));
+            
+            
+            Object o;
             try {
-                reader = new ObjectInputStream(s.getInputStream());
-            } catch (Exception exc) {
+                o = reader.readObject();
+
+            } catch (Exception ecx) {
                 return;
             }
 
-        while (true) {
-           
-
-            Object o = reader.readObject();
             if (o == null) {
                 continue;
             }
@@ -54,9 +67,10 @@ public class VoiceClient {
             command readed = (command) o;
             String answer = readed.getText();
 
-            if(answer.equals("exit"))
+            if (answer.equals("exit")) {
                 break;
-            
+            }
+
             JOptionPane.showMessageDialog(null, answer);
         }
         System.exit(0);

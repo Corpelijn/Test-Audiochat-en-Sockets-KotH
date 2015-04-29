@@ -9,8 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -21,6 +21,7 @@ public class Client extends Thread {
     private Socket socket;
     private ObjectOutputStream sender;
     private ObjectInputStream reader;
+    private List<String> messages;
 
     public Socket getSocket() {
         return this.socket;
@@ -32,6 +33,7 @@ public class Client extends Thread {
 
     public Client(Socket socket) {
         this.socket = socket;
+        this.messages = new ArrayList<>();
         try {
             sender = new ObjectOutputStream(this.socket.getOutputStream());
             //reader = new ObjectInputStream(socket.getInputStream());
@@ -39,19 +41,26 @@ public class Client extends Thread {
         }
     }
 
+    public synchronized void addMessage(String message) {
+        messages.add(message);
+    }
+
     @Override
     public void run() {
-        int count = 0;
+        messages.add("Welcome");
         try {
             while (true) {
-                try {
-                    sender.writeObject(new command("testje" + count));
-                    count++;
-                    if (count == 3) {
-                        sender.writeObject(new command("exit"));
-                        break;
+                synchronized (messages) {
+                    if (messages.size() > 0) {
+                        try {
+                            sender.writeObject(new command(messages.get(0)));
+                            if (messages.get(0).equals("exit")) {
+                                break;
+                            }
+                            messages.remove(0);
+                        } catch (IOException ex) {
+                        }
                     }
-                } catch (IOException ex) {
                 }
 
             }

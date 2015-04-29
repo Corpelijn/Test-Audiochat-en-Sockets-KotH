@@ -18,7 +18,6 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
  * A TCP server that runs on port 9090.  When a client connects, it
@@ -31,9 +30,13 @@ public class VoiceServer {
     /**
      * Runs the server.
      */
-    public static void main(String[] args) throws IOException {
+    private ArrayList<Client> clients = new ArrayList<>();
+    
+    public void start() throws IOException {
         ServerSocket listener = new ServerSocket(9090);
-        ArrayList<Socket> clients = new ArrayList<>();
+        
+        MessageSpawn ms = new MessageSpawn(this);
+        ms.start();
         
         try {
             while (true) {
@@ -42,10 +45,19 @@ public class VoiceServer {
 
                 Client c = new Client(socket);
                 c.start();
+                clients.add(c);
             }
         }
         finally {
             listener.close();
+        }
+    }
+    
+    public void SendMessage(String message)
+    {
+        for(Client c : clients)
+        {
+            c.addMessage(message);
         }
     }
 }
