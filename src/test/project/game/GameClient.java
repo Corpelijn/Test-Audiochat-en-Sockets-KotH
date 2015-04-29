@@ -36,6 +36,9 @@ public class GameClient {
             if(o instanceof Date){
                 System.out.println(o.toString());
             }
+            else if (o instanceof String){
+                System.out.println(o);
+            }
         }
     }
 }
