@@ -37,10 +37,11 @@ public class VoiceServer {
                 System.out.println("Connecting...");
                 Socket socket = listener.accept();
                 try {
-                    ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
-                    //PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                    //out.println(new Date().toString());
-                    os.writeObject(new Date());
+                    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+                    out.println(new Date().toString());
+                    
+                    //ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
+                    //os.writeObject(new Date());
                     System.out.println("Connected to: " + socket.getRemoteSocketAddress().toString());
                 } finally {
                     socket.close();
