@@ -30,12 +30,7 @@ public class GameServer {
                 try {
                     ObjectOutputStream os = new ObjectOutputStream(socket.getOutputStream());
                     while (true) {
-                    //PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                        //out.println(new Date().toString());
-
-                        //out.println("Date object");
                         os.writeObject(new Date());
-                        //out.println("String object");
                         os.writeObject(new String("Koek"));
                         Thread.sleep(1000);
                         os.writeObject(new Date());
