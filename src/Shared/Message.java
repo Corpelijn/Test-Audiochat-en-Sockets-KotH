@@ -12,20 +12,26 @@ import java.io.Serializable;
  * @author Bas
  */
 public class Message implements Serializable {
-    public String message;
+    public String header;
+    public Object data;
     
-    public Message(String message)
+    public String getHeader()
     {
-        this.message = message;
+        return this.header;
     }
     
-    public String getMessage()
+    public void setHeader(String value)
     {
-        return this.message;
+        this.header = value;
     }
     
-    public void setMessage(String value)
+    public Object getData()
     {
-        this.message = value;
+        return this.data;
+    }
+    
+    public void setData(Object value)
+    {
+        this.data = value;
     }
 }

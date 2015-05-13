@@ -7,14 +7,12 @@ package Server;
 
 import Shared.Client;
 import Shared.Message;
+import Shared.TextMessage;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -22,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class VoiceServer {
 
-    private List<Client> connectedClients;
+    private final List<Client> connectedClients;
     public static List<Message> lastMessages;
 
     public VoiceServer() {
@@ -31,9 +29,7 @@ public class VoiceServer {
     }
 
     public void start() throws IOException {
-        ServerSocket listener = new ServerSocket(9090);
-        
-        try {
+        try (ServerSocket listener = new ServerSocket(9090)) {
             writeMessage("Server is online");
 
             while (true) {
@@ -57,13 +53,11 @@ public class VoiceServer {
                     //socket.close();
                 }
             }
-        } finally {
-            listener.close();
         }
     }
 
     public void writeMessage(String message) {
         System.out.println(message);
-        lastMessages.add(new Message(message));
+        lastMessages.add(new TextMessage(message));
     }
 }
