@@ -3,20 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.project.audiochat;
+package Server;
+
+import java.io.IOException;
 
 /**
  *
  * @author Bas
  */
-import java.io.IOException;
+public class Server {
 
-/**
- * Trivial client for the date server.
- */
-public class Client {
-
+    /**
+     * @param args the command line arguments
+     * @throws java.io.IOException
+     */
     public static void main(String[] args) throws IOException {
         new VoiceServer().start();
     }
+    
 }

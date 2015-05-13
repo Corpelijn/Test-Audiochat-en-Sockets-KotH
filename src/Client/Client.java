@@ -3,14 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test.project.audiochat;
+package Client;
 
 /**
  *
  * @author Bas
  */
-public class VoiceClient {
-    public void start()
-    {
+import Server.VoiceServer;
+import java.io.IOException;
+
+public class Client {
+
+    public static void main(String[] args) throws IOException {
+        new VoiceClient().start();
     }
 }
