@@ -67,6 +67,11 @@ public class VoiceClient {
                         System.out.print("\r<< ClientID received from server >>\n>");
                         continue;
                     }
+                    else if(mess.getDefine().equals("KICK"))
+                    {
+                        System.out.print("\r<< The host kicked you >>\n>");
+                        break;
+                    }
                 }
 
                 System.out.print("\r" + object.getTime() + ": " + object.getSenderName() + " says: ");
@@ -79,6 +84,8 @@ public class VoiceClient {
                     Logger.getLogger(VoiceClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            
+            System.exit(0);
         });
         t.start();
     }
@@ -88,9 +95,18 @@ public class VoiceClient {
             while (true) {
                 try {
                     Scanner input = new Scanner(System.in);
-                    String newMessage = input.nextLine();              
-
-                    sender.writeObject(new TextMessage(this.clientID, newMessage));
+                    String newMessage = input.nextLine(); 
+                    
+                    if(newMessage.startsWith("/kick "))
+                    {
+                        if(this.clientID == 1)
+                            sender.writeObject(new InfoMessage(Integer.parseInt(newMessage.replace("/kick ", "")), "KICK_CLIENT"));
+                        else
+                            System.out.println("<< You are not allowed to do that >>");
+                    }
+                    else
+                        sender.writeObject(new TextMessage(this.clientID, newMessage));
+                    
                     System.out.print(">");
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
@@ -102,8 +118,6 @@ public class VoiceClient {
                     Logger.getLogger(VoiceClient.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            
-            //System.exit(0);
         });
         t.start();
     }

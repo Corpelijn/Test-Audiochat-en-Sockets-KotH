@@ -114,6 +114,12 @@ public class Client implements Serializable {
                             name = (String) mess.getData();
                             continue;
                         }
+                        else if (mess.getDefine().equals("KICK_CLIENT")) {
+                            System.out.print("\r<< Client " + mess.getData() + " will be kicked >>\n>");
+                            Client c = getClient((int)mess.getData());
+                            c.sendMessage(new InfoMessage(null, "KICK"));
+                            break; 
+                        }
                     }
 
                     VoiceServer.lastMessages.add(object);
@@ -131,5 +137,21 @@ public class Client implements Serializable {
 
         });
         t.start();
+    }
+    
+    
+    private Client getClient(int id)
+    {
+        if (id == this.clientID) {
+            return this;
+        }
+
+        for (Client c : knownClients) {
+            if (id == c.clientID) {
+                return c;
+            }
+        }
+        
+        return null;
     }
 }
