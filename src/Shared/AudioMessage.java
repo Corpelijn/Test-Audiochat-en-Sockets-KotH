@@ -13,11 +13,23 @@ import java.util.Date;
  */
 public class AudioMessage extends Message {
 
-    public AudioMessage(int sender, Object data) {
+    private int volgNummer;
+    
+    public AudioMessage(int sender, Object data, int volgnummer) {
         super.setHeader("audio");
         super.setData(data);
         super.setTime(new Date());
         super.setSender(sender);
+        this.volgNummer = volgnummer;
     }
     
+    public int getVolgnummer()
+    {
+        return volgNummer;
+    }
+    
+    public void setVolgnummer(int nummer)
+    {
+        volgNummer = nummer;
+    }
 }

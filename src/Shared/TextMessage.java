@@ -14,7 +14,7 @@ import java.util.Date;
 public class TextMessage extends Message {
 
     public TextMessage(int sender, Object data) {
-        super.setHeader("audio");
+        super.setHeader("text");
         super.setData(data);
         super.setTime(new Date());
         super.setSender(sender);

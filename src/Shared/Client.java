@@ -11,7 +11,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -114,7 +116,9 @@ public class Client implements Serializable {
                     continue;
                 }
 
-                System.out.println("Message received from " + socket.getInetAddress());
+                SimpleDateFormat dt = new SimpleDateFormat("hh:mm:ss");
+                
+                System.out.println(dt.format(new Date()) + " Message received from " + socket.getInetAddress());
 
                 if (object instanceof InfoMessage) {
                     InfoMessage mess = (InfoMessage) object;
@@ -129,13 +133,19 @@ public class Client implements Serializable {
                         c.setClientDead();
                         continue;
                     }
+                } else if (object instanceof AudioMessage) {
+
+                } else {
+                    VoiceServer.lastMessages.add(object);
                 }
 
-                VoiceServer.lastMessages.add(object);
                 for (Client c : knownClients) {
                     c.sendMessage(object);
                 }
-                sendMessage(object);
+                if (object instanceof AudioMessage) {
+                } else {
+                    sendMessage(object);
+                }
 
                 try {
                     Thread.sleep(10);

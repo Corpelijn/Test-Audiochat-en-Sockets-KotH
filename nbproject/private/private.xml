@@ -4,9 +4,14 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/Users/Bas/Documenten/NetBeansProjects/test%20project%20Audiochat/src/Server/VoiceServer.java</file>
+            <file>file:/D:/Users/Bas/Documenten/NetBeansProjects/test%20project%20Audiochat/src/Client/AudioLineOpenTest.java</file>
+            <file>file:/D:/Users/Bas/Documenten/NetBeansProjects/test%20project%20Audiochat/src/Client/StaticAudioAttributes.java</file>
             <file>file:/D:/Users/Bas/Documenten/NetBeansProjects/test%20project%20Audiochat/src/Shared/Client.java</file>
+            <file>file:/D:/Users/Bas/Documenten/NetBeansProjects/test%20project%20Audiochat/src/Client/AudioCapture.java</file>
+            <file>file:/D:/Users/Bas/Documenten/NetBeansProjects/test%20project%20Audiochat/src/Client/AudioPlayer.java</file>
+            <file>file:/D:/Users/Bas/Documenten/NetBeansProjects/test%20project%20Audiochat/src/Server/Server.java</file>
             <file>file:/D:/Users/Bas/Documenten/NetBeansProjects/test%20project%20Audiochat/src/Client/VoiceClient.java</file>
-            <file>file:/D:/Users/Bas/Documenten/NetBeansProjects/test%20project%20Audiochat/src/Shared/Message.java</file>
+            <file>file:/D:/Users/Bas/Documenten/NetBeansProjects/test%20project%20Audiochat/src/Shared/AudioMessage.java</file>
         </group>
     </open-files>
 </project-private>
