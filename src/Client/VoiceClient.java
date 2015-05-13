@@ -5,13 +5,13 @@
  */
 package Client;
 
+import Shared.InfoMessage;
 import Shared.Message;
 import Shared.TextMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +25,8 @@ public class VoiceClient {
     private Socket socket;
     private ObjectOutputStream sender;
     private ObjectInputStream reader;
-    private String name;
+    
+    private int clientID = -1;
 
     public void start() throws IOException {
         Scanner input = new Scanner(System.in);
@@ -37,12 +38,14 @@ public class VoiceClient {
         reader = new ObjectInputStream(this.socket.getInputStream());
         
         System.out.print("Client: Enter a nickname for the chat: ");
-        this.name = input.nextLine();
-        if(this.name.equals(""))
-            this.name = "Ik ben een vieze eikel";
+        String name = input.nextLine();
+        if(name.equals(""))
+            name = "Ballenzuiger";
 
         startMessageReader();
         startMessageWriter();
+        
+        sender.writeObject(new InfoMessage(name, "CLIENT_NAME"));
     }
 
     private void startMessageReader() {
@@ -54,9 +57,20 @@ public class VoiceClient {
                 } catch (IOException | ClassNotFoundException ex) {
                     continue;
                 }
+                
+                if(object instanceof InfoMessage)
+                {
+                    InfoMessage mess = (InfoMessage)object;
+                    if(mess.getDefine().equals("CLIENT_ID"))
+                    {
+                        this.clientID = (int)mess.getData();
+                        System.out.print("\r<< ClientID received from server >>\n>");
+                        continue;
+                    }
+                }
 
-                System.out.print("\r" + object.getTime() + ": " + object.getSender() + " says: ");
-                System.out.println(object.data);
+                System.out.print("\r" + object.getTime() + ": " + object.getSenderName() + " says: ");
+                System.out.println(object.getData());
                 System.out.print(">");
 
                 try {
@@ -74,18 +88,9 @@ public class VoiceClient {
             while (true) {
                 try {
                     Scanner input = new Scanner(System.in);
-                    String newMessage = input.nextLine();
+                    String newMessage = input.nextLine();              
 
-                    if (newMessage.startsWith("/nickname")) {
-                        name = newMessage.replace("/nickname ", "");
-                        System.out.print(">");
-                        continue;
-                    }
-                    else if (newMessage.startsWith("/exit")) {
-                        break;
-                    }
-
-                    sender.writeObject(new TextMessage(this.name, newMessage));
+                    sender.writeObject(new TextMessage(this.clientID, newMessage));
                     System.out.print(">");
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
@@ -98,7 +103,7 @@ public class VoiceClient {
                 }
             }
             
-            System.exit(0);
+            //System.exit(0);
         });
         t.start();
     }

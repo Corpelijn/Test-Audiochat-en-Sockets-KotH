@@ -20,16 +20,21 @@ import java.util.logging.Logger;
  *
  * @author Bas
  */
-public class Client implements Serializable{
+public class Client implements Serializable {
 
     private Socket socket;
     private ObjectOutputStream sender;
     private ObjectInputStream reader;
     private List<Client> knownClients;
-    //private String name;
+    private int clientID;
+    private String name;
+
+    private static int clientCounter = 0;
 
     public Client(Socket socket, List<Client> knownClients) {
         this.socket = socket;
+        clientCounter += 1;
+        this.clientID = clientCounter;
         this.knownClients = new ArrayList<>(knownClients);
 
         try {
@@ -37,17 +42,20 @@ public class Client implements Serializable{
             reader = new ObjectInputStream(this.socket.getInputStream());
         } catch (Exception ex) {
         }
-        
+
+        try {
+            sender.writeObject(new InfoMessage(clientCounter, "CLIENT_ID"));
+        } catch (IOException ex) {
+        }
+
         startMessageReader();
     }
-    
-    public void addClient(Client c)
-    {
+
+    public void addClient(Client c) {
         knownClients.add(c);
     }
-    
-    public Socket getSocket()
-    {
+
+    public Socket getSocket() {
         return this.socket;
     }
 
@@ -58,46 +66,69 @@ public class Client implements Serializable{
     }
 
     public void sendMessage(Message message) {
+        // Message contains a client id
+        // replace the client id for a name
+        if (message.getSender() == -10) {
+            message.setSenderName("SERVER");
+        }
+
+        if (message.getSender() == this.clientID) {
+            message.setSenderName(this.name);
+        }
+
+        for (Client c : knownClients) {
+            if (message.getSender() == c.clientID) {
+                message.setSenderName(c.name);
+                break;
+            }
+        }
+
+        // The message now has a client name
+        // Send the message
         try {
             sender.writeObject(message);
         } catch (Exception ecx) {
             System.out.println(ecx.getMessage());
         }
     }
-    
-    private void startMessageReader()
-    {
+
+    private void startMessageReader() {
         Thread t = new Thread(new Runnable() {
 
             @Override
             public void run() {
-                while(true)
-                {
+                while (true) {
                     Message object = null;
                     try {
-                        object = (Message)reader.readObject();
+                        object = (Message) reader.readObject();
                     } catch (Exception ex) {
                         continue;
                     }
 
                     System.out.println("Message received from " + socket.getInetAddress());
+
+                    if (object instanceof InfoMessage) {
+                        InfoMessage mess = (InfoMessage) object;
+                        if (mess.getDefine().equals("CLIENT_NAME")) {
+                            System.out.print("\r<< Client(" + clientID + ") changed name from \'" + name + "\' to \'" + mess.getData() + "\' >>\n>");
+                            name = (String) mess.getData();
+                            continue;
+                        }
+                    }
+
                     VoiceServer.lastMessages.add(object);
-                    for(Client c : knownClients)
-                    {
+                    for (Client c : knownClients) {
                         c.sendMessage(object);
                     }
-                    try {
-                        sender.writeObject(object);
-                    } catch (IOException ex) {
-                    }
-                    
+                    sendMessage(object);
+
                     try {
                         Thread.sleep(10);
                     } catch (InterruptedException ex) {
                     }
                 }
             }
-            
+
         });
         t.start();
     }

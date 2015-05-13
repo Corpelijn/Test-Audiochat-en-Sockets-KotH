@@ -64,6 +64,6 @@ public class VoiceServer {
 
     public void writeMessage(String message) {
         System.out.println(message);
-        lastMessages.add(new TextMessage("SERVER", message));
+        lastMessages.add(new TextMessage(-10, message));
     }
 }

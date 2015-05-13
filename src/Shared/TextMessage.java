@@ -13,11 +13,11 @@ import java.util.Date;
  */
 public class TextMessage extends Message {
 
-    public TextMessage(String sender, Object data) {
-        super.data = data;
-        super.header = "text";
-        super.sender = sender;
-        super.time = new Date();
+    public TextMessage(int sender, Object data) {
+        super.setHeader("audio");
+        super.setData(data);
+        super.setTime(new Date());
+        super.setSender(sender);
     }
 
 }

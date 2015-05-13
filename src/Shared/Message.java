@@ -14,10 +14,11 @@ import java.util.Date;
  * @author Bas
  */
 public class Message implements Serializable {
-    public String header;
-    public Object data;
-    public Date time;
-    public String sender;
+    private String header;
+    private Object data;
+    private Date time;
+    private int sender;
+    private String senderName;
     
     
     public String getHeader()
@@ -41,12 +42,12 @@ public class Message implements Serializable {
         this.time = time;
     }
     
-    public String getSender()
+    public int getSender()
     {
         return this.sender;
     }
     
-    public void setSender(String sender)
+    public void setSender(int sender)
     {
         this.sender = sender;
     }
@@ -59,5 +60,15 @@ public class Message implements Serializable {
     public void setData(Object value)
     {
         this.data = value;
+    }
+    
+    public String getSenderName()
+    {
+        return this.senderName;
+    }
+    
+    public void setSenderName(String value)
+    {
+        this.senderName = value;
     }
 }
