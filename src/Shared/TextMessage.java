@@ -5,15 +5,19 @@
  */
 package Shared;
 
+import java.util.Date;
+
 /**
  *
  * @author Bas
  */
 public class TextMessage extends Message {
 
-    public TextMessage(Object data) {
+    public TextMessage(String sender, Object data) {
         super.data = data;
         super.header = "text";
+        super.sender = sender;
+        super.time = new Date();
     }
 
 }

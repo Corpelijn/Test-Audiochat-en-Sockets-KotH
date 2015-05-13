@@ -5,15 +5,19 @@
  */
 package Shared;
 
+import java.util.Date;
+
 /**
  *
  * @author Bas
  */
 public class AudioMessage extends Message {
 
-    public AudioMessage(Object data) {
+    public AudioMessage(String sender, Object data) {
         super.data = data;
         super.header = "audio";
+        super.sender = sender;
+        super.time = new Date();
     }
     
 }

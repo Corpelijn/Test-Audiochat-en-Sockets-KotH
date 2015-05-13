@@ -6,6 +6,8 @@
 package Shared;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  *
@@ -14,6 +16,9 @@ import java.io.Serializable;
 public class Message implements Serializable {
     public String header;
     public Object data;
+    public Date time;
+    public String sender;
+    
     
     public String getHeader()
     {
@@ -23,6 +28,27 @@ public class Message implements Serializable {
     public void setHeader(String value)
     {
         this.header = value;
+    }
+    
+    public String getTime()
+    {
+        SimpleDateFormat dt = new SimpleDateFormat("hh:mm:ss");
+        return dt.format(this.time);
+    }
+    
+    public void setTime(Date time)
+    {
+        this.time = time;
+    }
+    
+    public String getSender()
+    {
+        return this.sender;
+    }
+    
+    public void setSender(String sender)
+    {
+        this.sender = sender;
     }
     
     public Object getData()

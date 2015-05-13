@@ -13,6 +13,8 @@ import java.io.Serializable;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,6 +26,7 @@ public class Client implements Serializable{
     private ObjectOutputStream sender;
     private ObjectInputStream reader;
     private List<Client> knownClients;
+    //private String name;
 
     public Client(Socket socket, List<Client> knownClients) {
         this.socket = socket;
@@ -86,6 +89,11 @@ public class Client implements Serializable{
                     try {
                         sender.writeObject(object);
                     } catch (IOException ex) {
+                    }
+                    
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ex) {
                     }
                 }
             }

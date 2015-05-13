@@ -13,6 +13,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -28,9 +30,9 @@ public class VoiceServer {
         VoiceServer.lastMessages = new ArrayList<>();
     }
 
-    public void start() throws IOException {
+    public void start() {
         try (ServerSocket listener = new ServerSocket(9090)) {
-            writeMessage("Server is online");
+            writeMessage("Server is online on IP: " + listener.getInetAddress());
 
             while (true) {
                 System.out.println("Waiting for clients to connect...");
@@ -52,12 +54,16 @@ public class VoiceServer {
                 } finally {
                     //socket.close();
                 }
+                
+                Thread.sleep(10);
             }
+        } catch (InterruptedException | IOException ex) {
+            Logger.getLogger(VoiceServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
     public void writeMessage(String message) {
         System.out.println(message);
-        lastMessages.add(new TextMessage(message));
+        lastMessages.add(new TextMessage("SERVER", message));
     }
 }
