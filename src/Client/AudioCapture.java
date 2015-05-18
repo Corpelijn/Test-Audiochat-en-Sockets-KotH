@@ -76,6 +76,10 @@ public class AudioCapture {
                 client.sendMessage(message);
 
                 volgnummer++;
+                
+                if(line.isRunning()) {
+                    System.out.println("Line running");
+                }
             }
 
             client.sendMessage(new AudioMessage(client.getClientId(), "reset", volgnummer));
