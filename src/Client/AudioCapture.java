@@ -62,7 +62,7 @@ public class AudioCapture {
             // Here, stopped is a global boolean set by another thread.
             System.out.println("Started recording");
 
-            while (!stopped) {
+            while (!stopped && line.isRunning()) {
                 // Read the next chunk of data from the TargetDataLine.
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -76,10 +76,6 @@ public class AudioCapture {
                 client.sendMessage(message);
 
                 volgnummer++;
-                
-                if(line.isRunning()) {
-                    System.out.println("Line running");
-                }
             }
 
             client.sendMessage(new AudioMessage(client.getClientId(), "reset", volgnummer));
